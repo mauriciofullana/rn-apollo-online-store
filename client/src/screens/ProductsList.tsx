@@ -1,20 +1,38 @@
 import React, {FunctionComponent} from 'react';
-import {StyleSheet, Text, View, Button} from 'react-native';
+import {useQuery} from '@apollo/client';
+
+import {StyleSheet, Text, View, FlatList} from 'react-native';
 import {ProductsListNavigationProp} from '../navigation';
+import {ProductData, GET_ALL_PRODUCTS} from '../graphql';
 
 interface ProductsListProps {
   navigation: ProductsListNavigationProp;
 }
 
 const ProductsList: FunctionComponent<ProductsListProps> = ({navigation}) => {
+  const {data, loading, error} = useQuery<ProductData>(GET_ALL_PRODUCTS);
+
+  if (loading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error while loading products...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text>ProductsList</Text>
-      <Button
-        title="Detail"
-        onPress={() => {
-          navigation.navigate('ProductDetail');
-        }}
+      <FlatList
+        data={data?.products}
+        renderItem={({item}) => <Text>{item.name}</Text>}
       />
     </View>
   );
