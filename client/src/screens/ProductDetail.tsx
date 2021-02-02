@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-const ProductDetail = () => {
+const ProductDetail: FunctionComponent = () => {
   return (
     <View style={styles.container}>
       <Text>ProductDetail</Text>

@@ -3,13 +3,14 @@ import {useQuery} from '@apollo/client';
 
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 import {ProductsListNavigationProp} from '../navigation';
-import {ProductData, GET_ALL_PRODUCTS} from '../graphql';
+import {ProductData, GET_ALL_PRODUCTS, Product} from '../graphql';
+import ProductComponent from '../components/Product';
 
 interface ProductsListProps {
   navigation: ProductsListNavigationProp;
 }
 
-const ProductsList: FunctionComponent<ProductsListProps> = ({navigation}) => {
+const ProductsList: FunctionComponent<ProductsListProps> = () => {
   const {data, loading, error} = useQuery<ProductData>(GET_ALL_PRODUCTS);
 
   if (loading) {
@@ -28,22 +29,23 @@ const ProductsList: FunctionComponent<ProductsListProps> = ({navigation}) => {
     );
   }
 
+  const renderProduct = (product: Product) => {
+    return <ProductComponent product={product} />;
+  };
+
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={data?.products}
-        renderItem={({item}) => <Text>{item.name}</Text>}
-      />
-    </View>
+    <FlatList
+      contentContainerStyle={styles.productsListContainer}
+      data={data?.products}
+      renderItem={(product) => renderProduct(product.item)}
+    />
   );
 };
 
 export default ProductsList;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  productsListContainer: {
+    backgroundColor: '#fafafa',
   },
 });
