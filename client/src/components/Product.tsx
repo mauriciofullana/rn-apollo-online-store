@@ -1,31 +1,40 @@
 import React, {FunctionComponent} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+
 import {Product as IProduct} from '../graphql';
 import {BASE_URL} from '../config';
+import {FavoriteIcon} from '../components';
+import {ProductsListNavigationProp} from '../navigation';
 
 interface ProductProps {
   product: IProduct;
 }
 
-const Product: FunctionComponent<ProductProps> = ({product}) => {
+export const Product: FunctionComponent<ProductProps> = ({product}) => {
+  const navigation = useNavigation<ProductsListNavigationProp>();
+
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => navigation.navigate('ProductDetail')}>
       <Image
         style={styles.thumb}
         source={{uri: `${BASE_URL}${product.thumb.url}`}}
       />
+
       <View style={styles.infoContainer}>
         <View style={styles.namePriceContainer}>
           <Text style={styles.name}>{product.name}</Text>
-          <Text style={styles.price}>{product.price}</Text>
+          <Text style={styles.price}>{`${product.price}$`}</Text>
         </View>
         <Text style={styles.desc}>{product.desc}</Text>
       </View>
+
+      <FavoriteIcon />
     </TouchableOpacity>
   );
 };
-
-export default Product;
 
 const styles = StyleSheet.create({
   card: {
@@ -48,13 +57,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 16,
   },
   infoContainer: {
+    marginTop: 8,
     padding: 16,
   },
   namePriceContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
+    flexDirection: 'column',
   },
   name: {
     fontSize: 20,

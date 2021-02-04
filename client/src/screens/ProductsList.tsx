@@ -4,7 +4,7 @@ import {useQuery} from '@apollo/client';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 import {ProductsListNavigationProp} from '../navigation';
 import {ProductData, GET_ALL_PRODUCTS, Product} from '../graphql';
-import ProductComponent from '../components/Product';
+import {Product as ProductComponent} from '../components/Product';
 
 interface ProductsListProps {
   navigation: ProductsListNavigationProp;
