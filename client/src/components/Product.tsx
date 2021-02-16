@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 
 import {Product as IProduct} from '../graphql';
 import {BASE_URL} from '../config';
-import {FavoriteIcon} from '../components';
+import {FavoriteIcon, Card} from '../components';
 import {ProductsListNavigationProp} from '../navigation';
 
 interface ProductProps {
@@ -15,7 +15,7 @@ export const Product: FunctionComponent<ProductProps> = ({product}) => {
   const navigation = useNavigation<ProductsListNavigationProp>();
 
   return (
-    <TouchableOpacity
+    <Card
       style={styles.card}
       onPress={() => navigation.navigate('ProductDetail')}>
       <Image
@@ -24,32 +24,19 @@ export const Product: FunctionComponent<ProductProps> = ({product}) => {
       />
 
       <View style={styles.infoContainer}>
-        <View style={styles.namePriceContainer}>
-          <Text style={styles.name}>{product.name}</Text>
-          <Text style={styles.price}>{`${product.price}$`}</Text>
-        </View>
+        <Text style={styles.name}>{product.name}</Text>
+        <Text style={styles.price}>{`${product.price}$`}</Text>
         <Text style={styles.desc}>{product.desc}</Text>
       </View>
 
       <FavoriteIcon />
-    </TouchableOpacity>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
     marginVertical: 20,
-    marginHorizontal: 8,
-    backgroundColor: 'white',
-    borderRadius: 16,
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    shadowColor: 'black',
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    elevation: 2,
   },
   thumb: {
     height: 300,
@@ -59,9 +46,6 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginTop: 8,
     padding: 16,
-  },
-  namePriceContainer: {
-    flexDirection: 'column',
   },
   name: {
     fontSize: 20,
