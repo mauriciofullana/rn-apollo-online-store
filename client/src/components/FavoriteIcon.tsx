@@ -1,15 +1,23 @@
 import React, {FunctionComponent} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Svg, Path} from 'react-native-svg';
 
-export const FavoriteIcon: FunctionComponent = () => {
+interface FavoriteProps {
+  favorite: boolean;
+  onPress: () => void;
+}
+
+const FavoriteIcon: FunctionComponent<FavoriteProps> = ({
+  favorite,
+  onPress,
+}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Svg
         width={32}
         height={32}
         viewBox="0 0 24 24"
-        fill="none"
+        fill={favorite ? 'white' : 'none'}
         stroke="white"
         strokeWidth={2}
         strokeLinecap="round"
@@ -33,3 +41,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default FavoriteIcon;

@@ -2,20 +2,33 @@ import React, {FunctionComponent} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-import {Product as IProduct} from '../graphql';
+import {
+  Product as IProduct,
+  ADD_OR_REMOVE_PRODUCT_FROM_FAVORITE,
+} from '../graphql';
 import {BASE_URL} from '../config';
 import {FavoriteIcon, Card} from '../components';
 import {ProductsListNavigationProp} from '../navigation';
+import {useMutation} from '@apollo/client';
 
 interface ProductProps {
   product: IProduct;
 }
 
-export const Product: FunctionComponent<ProductProps> = ({product}) => {
+const Product: FunctionComponent<ProductProps> = ({product}) => {
   const navigation = useNavigation<ProductsListNavigationProp>();
+  const [addOrRemoveProductFromFavorite] = useMutation(
+    ADD_OR_REMOVE_PRODUCT_FROM_FAVORITE,
+    {
+      variables: {
+        productId: product.id,
+      },
+    },
+  );
 
   return (
     <Card
+      key={product.id}
       style={styles.card}
       onPress={() => navigation.navigate('ProductDetail')}>
       <Image
@@ -25,11 +38,16 @@ export const Product: FunctionComponent<ProductProps> = ({product}) => {
 
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{product.name}</Text>
-        <Text style={styles.price}>{`${product.price}$`}</Text>
+        <Text style={styles.price}>{`${product.price}`}</Text>
         <Text style={styles.desc}>{product.desc}</Text>
       </View>
 
-      <FavoriteIcon />
+      <FavoriteIcon
+        favorite={product.favorite}
+        onPress={async () => {
+          await addOrRemoveProductFromFavorite();
+        }}
+      />
     </Card>
   );
 };
@@ -61,3 +79,5 @@ const styles = StyleSheet.create({
     color: '#787878',
   },
 });
+
+export default Product;

@@ -1,32 +1,26 @@
 import React, {FunctionComponent} from 'react';
 import {useQuery} from '@apollo/client';
 
-import {StyleSheet, Text, View, FlatList} from 'react-native';
+import {StyleSheet, FlatList} from 'react-native';
 import {ProductsListNavigationProp} from '../navigation';
 import {ProductData, GET_ALL_PRODUCTS, Product} from '../graphql';
-import {Product as ProductComponent} from '../components/Product';
+import {Product as ProductComponent, Loading, Error} from '../components';
 
 interface ProductsListProps {
   navigation: ProductsListNavigationProp;
 }
 
 const ProductsList: FunctionComponent<ProductsListProps> = () => {
-  const {data, loading, error} = useQuery<ProductData>(GET_ALL_PRODUCTS);
+  const {data, loading, error} = useQuery<ProductData>(GET_ALL_PRODUCTS, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (loading) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
+    return <Loading />;
   }
 
   if (error) {
-    return (
-      <View>
-        <Text>Error while loading products...</Text>
-      </View>
-    );
+    return <Error error={error} />;
   }
 
   const renderProduct = (product: Product) => {

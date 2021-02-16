@@ -3,6 +3,7 @@ export interface Product {
   name: string;
   price: number;
   desc: string;
+  favorite: boolean;
   thumb: {
     id: string;
     url: string;

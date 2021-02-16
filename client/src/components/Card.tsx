@@ -6,11 +6,7 @@ interface CardProps {
   onPress: () => void;
 }
 
-export const Card: FunctionComponent<CardProps> = ({
-  style,
-  children,
-  onPress,
-}) => {
+const Card: FunctionComponent<CardProps> = ({style, children, onPress}) => {
   return (
     <TouchableOpacity style={[styles.card, style]} onPress={onPress}>
       {children}
@@ -33,3 +29,5 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
 });
+
+export default Card;
