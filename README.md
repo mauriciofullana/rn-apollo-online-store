@@ -2,7 +2,7 @@
 
 Client:
 
-React native online shop using apollo 3.
+React native online shop using graphql and apollo 3.
 
 Server:
 
